@@ -8,7 +8,7 @@ import RandomPlanet from "./components/random-planet/random-planet.component";
 
 function App() {
   return (
-    <div>
+    <div className="container">
       <Header />
       <RandomPlanet />
 

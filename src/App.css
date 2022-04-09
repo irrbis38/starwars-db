@@ -1,0 +1,4 @@
+.toggle-planet,
+.toggle-planet:focus {
+  box-shadow: none !important; 
+}

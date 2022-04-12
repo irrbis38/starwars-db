@@ -1,15 +1,16 @@
 import React from "react";
 
 import "./App.css";
+import ErrorButton from "./components/error-button/error-button.component";
+import ErrorIndicator from "./components/error-indicator/error-indicator.component";
 import Header from "./components/header/header.component";
-import ItemList from "./components/item-list/item-list.component";
-import PersonDetails from "./components/person-details/person-details.component";
+import PeoplePage from "./components/people-page/people-page.component";
 import RandomPlanet from "./components/random-planet/random-planet.component";
 
 class App extends React.Component {
   state = {
     showRandomPlanet: true,
-    selectedPerson: null,
+    hasError: false,
   };
 
   toggleRandomPlanet = () => {
@@ -20,35 +21,36 @@ class App extends React.Component {
     });
   };
 
-  onPersonSelected = (id) => {
-    this.setState({
-      selectedPerson: id,
-    });
-  };
+  componentDidCatch() {
+    console.log("componentDidCatch()");
+    this.setState({ hasError: true });
+  }
 
   render() {
-    const { showRandomPlanet } = this.state;
+    const { showRandomPlanet, hasError } = this.state;
+
+    if (hasError) {
+      return <ErrorIndicator />;
+    }
 
     return (
       <div className="container">
         <Header />
         {showRandomPlanet && <RandomPlanet />}
 
-        <button
-          className="toggle-planet btn btn-warning btn-lg mb-2"
-          onClick={this.toggleRandomPlanet}
-        >
-          Toggle Random Planet
-        </button>
-
-        <div className="row mb2">
-          <div className="col-md-6">
-            <ItemList onItemSelected={this.onPersonSelected} />
-          </div>
-          <div className="col-md-6">
-            <PersonDetails personId={this.state.selectedPerson} />
-          </div>
+        <div>
+          <button
+            className="toggle-planet btn btn-warning btn-lg mb-2"
+            onClick={this.toggleRandomPlanet}
+          >
+            Toggle Random Planet
+          </button>
+          <ErrorButton />
         </div>
+
+        <PeoplePage />
+        <PeoplePage />
+        <PeoplePage />
       </div>
     );
   }

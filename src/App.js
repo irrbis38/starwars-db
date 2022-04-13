@@ -6,10 +6,16 @@ import ErrorIndicator from "./components/error-indicator/error-indicator.compone
 import Header from "./components/header/header.component";
 import PeoplePage from "./components/people-page/people-page.component";
 import RandomPlanet from "./components/random-planet/random-planet.component";
+import SwapiService from "./services/swapi-service";
+import ItemList from "./components/item-list/item-list.component";
+import PersonDetails from "./components/person-details/person-details.component";
 
 class App extends React.Component {
+  swapiService = new SwapiService();
+
   state = {
     showRandomPlanet: true,
+    selectedPerson: null,
     hasError: false,
   };
 
@@ -21,8 +27,11 @@ class App extends React.Component {
     });
   };
 
+  onPersonSelected = (selectedPerson) => {
+    this.setState({ selectedPerson });
+  };
+
   componentDidCatch() {
-    console.log("componentDidCatch()");
     this.setState({ hasError: true });
   }
 
@@ -48,9 +57,25 @@ class App extends React.Component {
           <ErrorButton />
         </div>
 
-        <PeoplePage />
-        <PeoplePage />
-        <PeoplePage />
+        <PeoplePage
+          getData={this.swapiService.getAllPeople}
+          renderItem={({ name, gender, birthYear }) =>
+            `${name} (${gender}, ${birthYear})`
+          }
+        />
+
+        <div className="row mb-4">
+          <div className="col-md-6">
+            <ItemList
+              onItemSelected={this.onPersonSelected}
+              getData={this.swapiService.getAllPlanets}
+              renderItem={({ name, diameter }) => `${name} (${diameter})`}
+            />
+          </div>
+          <div className="col-md-6">
+            <PersonDetails personId={this.state.selectedPerson} />
+          </div>
+        </div>
       </div>
     );
   }

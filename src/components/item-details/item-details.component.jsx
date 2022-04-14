@@ -1,59 +1,65 @@
 import React from "react";
-import SwapiService from "./../../services/swapi-service";
-
-import "./person-details.styles.css";
-import Spiner from "./../spiner/spiner.component";
+import SwapiService from "../../services/swapi-service";
+import Spiner from "../spiner/spiner.component";
 import ErrorButton from "../error-button/error-button.component";
+import "./item-details.styles.css";
 
-export default class PersonDetails extends React.Component {
+export default class ItemDetails extends React.Component {
   swapiService = new SwapiService();
 
   state = {
-    person: null,
+    item: null,
     showSpiner: false,
+    image: null,
   };
 
   componentDidMount() {
-    this.updatePerson();
+    this.updateItem();
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props.personId !== prevProps.personId) {
+  componentDidUpdate(prevProps) {
+    if (this.props.itemId !== prevProps.itemId) {
       this.setState({ showSpiner: true });
-      this.updatePerson();
+      this.updateItem();
     }
   }
 
-  updatePerson() {
-    const { personId } = this.props;
-    if (!personId) {
+  updateItem() {
+    const { itemId, getData, getImageUrl } = this.props;
+
+    if (!itemId) {
       return;
     }
-    this.swapiService.getPerson(personId).then((person) => {
+
+    getData(itemId).then((item) => {
       this.setState({
-        person,
+        item,
         showSpiner: false,
+        image: getImageUrl(item),
       });
     });
+    // this.swapiService.getPerson(itemId).then((person) => {
+    //   this.setState({
+    //     item: person,
+    //     showSpiner: false,
+    //   });
+    // });
   }
   render() {
     if (this.state.showSpiner) {
       return <Spiner />;
     }
 
-    if (!this.state.person) {
-      return <span>Select a person from a list</span>;
+    if (!this.state.item) {
+      return <span>Select a item from a list</span>;
     }
 
-    const { id, name, gender, birthYear, eyeColor } = this.state.person;
+    const { id, name, gender, birthYear, eyeColor } = this.state.item;
+    const { image } = this.state;
 
     return (
-      <div className="person-details card">
-        <img
-          className="person-image"
-          src={`https://starwars-visualguide.com/assets/img/characters/${id}.jpg`}
-          alt={name}
-        />
+      <div className="item-details card">
+        <img className="item-image" src={image} alt={name} />
 
         <div className="card-body">
           <h4>{name}</h4>

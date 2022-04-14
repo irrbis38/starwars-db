@@ -8,6 +8,8 @@ import PeoplePage from "./components/people-page/people-page.component";
 import RandomPlanet from "./components/random-planet/random-planet.component";
 import SwapiService from "./services/swapi-service";
 import ErrorBoundary from "./components/error-boundary/error-boundary.component";
+import ItemDetails from "./components/item-details/item-details.component";
+import Row from "./components/row/row.components";
 
 class App extends React.Component {
   swapiService = new SwapiService();
@@ -41,11 +43,35 @@ class App extends React.Component {
       return <ErrorIndicator />;
     }
 
+    const {
+      getPerson,
+      getStarship,
+      getPersonImage,
+      getStarshipImage,
+      getPlanetImage,
+    } = this.swapiService;
+
+    const personDetails = (
+      <ItemDetails
+        itemId={2}
+        getData={getPerson}
+        getImageUrl={getPersonImage}
+      />
+    );
+
+    const starshipDetails = (
+      <ItemDetails
+        itemId={5}
+        getData={getStarship}
+        getImageUrl={getStarshipImage}
+      />
+    );
+
     return (
       <ErrorBoundary>
         <div className="container">
           <Header />
-          {showRandomPlanet && <RandomPlanet />}
+          {/* {showRandomPlanet && <RandomPlanet />}
 
           <div>
             <button
@@ -57,7 +83,9 @@ class App extends React.Component {
             <ErrorButton />
           </div>
 
-          <PeoplePage getData={this.swapiService.getAllPeople} />
+          <PeoplePage getData={this.swapiService.getAllPeople} /> */}
+
+          <Row left={personDetails} right={starshipDetails} />
         </div>
       </ErrorBoundary>
     );

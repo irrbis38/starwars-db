@@ -1,7 +1,6 @@
 import React from "react";
-
-import "./item-list.styles.css";
 import Spiner from "./../spiner/spiner.component";
+import "./item-list.styles.css";
 
 export default class ItemList extends React.Component {
   state = {

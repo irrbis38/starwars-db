@@ -7,8 +7,7 @@ import Header from "./components/header/header.component";
 import PeoplePage from "./components/people-page/people-page.component";
 import RandomPlanet from "./components/random-planet/random-planet.component";
 import SwapiService from "./services/swapi-service";
-import ItemList from "./components/item-list/item-list.component";
-import PersonDetails from "./components/person-details/person-details.component";
+import ErrorBoundary from "./components/error-boundary/error-boundary.component";
 
 class App extends React.Component {
   swapiService = new SwapiService();
@@ -43,40 +42,24 @@ class App extends React.Component {
     }
 
     return (
-      <div className="container">
-        <Header />
-        {showRandomPlanet && <RandomPlanet />}
+      <ErrorBoundary>
+        <div className="container">
+          <Header />
+          {showRandomPlanet && <RandomPlanet />}
 
-        <div>
-          <button
-            className="toggle-planet btn btn-warning btn-lg mb-2"
-            onClick={this.toggleRandomPlanet}
-          >
-            Toggle Random Planet
-          </button>
-          <ErrorButton />
-        </div>
-
-        <PeoplePage
-          getData={this.swapiService.getAllPeople}
-          renderItem={({ name, gender, birthYear }) =>
-            `${name} (${gender}, ${birthYear})`
-          }
-        />
-
-        <div className="row mb-4">
-          <div className="col-md-6">
-            <ItemList
-              onItemSelected={this.onPersonSelected}
-              getData={this.swapiService.getAllPlanets}
-              renderItem={({ name, diameter }) => `${name} (${diameter})`}
-            />
+          <div>
+            <button
+              className="toggle-planet btn btn-warning btn-lg mb-2"
+              onClick={this.toggleRandomPlanet}
+            >
+              Toggle Random Planet
+            </button>
+            <ErrorButton />
           </div>
-          <div className="col-md-6">
-            <PersonDetails personId={this.state.selectedPerson} />
-          </div>
+
+          <PeoplePage getData={this.swapiService.getAllPeople} />
         </div>
-      </div>
+      </ErrorBoundary>
     );
   }
 }

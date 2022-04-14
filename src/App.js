@@ -8,7 +8,9 @@ import PeoplePage from "./components/people-page/people-page.component";
 import RandomPlanet from "./components/random-planet/random-planet.component";
 import SwapiService from "./services/swapi-service";
 import ErrorBoundary from "./components/error-boundary/error-boundary.component";
-import ItemDetails from "./components/item-details/item-details.component";
+import ItemDetails, {
+  Record,
+} from "./components/item-details/item-details.component";
 import Row from "./components/row/row.components";
 
 class App extends React.Component {
@@ -52,11 +54,10 @@ class App extends React.Component {
     } = this.swapiService;
 
     const personDetails = (
-      <ItemDetails
-        itemId={2}
-        getData={getPerson}
-        getImageUrl={getPersonImage}
-      />
+      <ItemDetails itemId={2} getData={getPerson} getImageUrl={getPersonImage}>
+        <Record field="gender" label="Gender" />
+        <Record field="eyeColor" label="Eye Color" />
+      </ItemDetails>
     );
 
     const starshipDetails = (

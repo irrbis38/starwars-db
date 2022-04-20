@@ -12,7 +12,6 @@ import ItemDetails, {
   Record,
 } from "./components/item-details/item-details.component";
 import Row from "./components/row/row.components";
-import ItemList from "./components/item-list/item-list.component";
 
 class App extends React.Component {
   swapiService = new SwapiService();
@@ -52,8 +51,6 @@ class App extends React.Component {
       getPersonImage,
       getStarshipImage,
       getPlanetImage,
-      getAllPeople,
-      getAllPlanets,
     } = this.swapiService;
 
     const personDetails = (
@@ -89,15 +86,7 @@ class App extends React.Component {
 
           <PeoplePage getData={this.swapiService.getAllPeople} /> */}
 
-          {/* <Row left={personDetails} right={starshipDetails} /> */}
-
-          <ItemList getData={getAllPeople} onItemSelected={() => {}}>
-            {({ name }) => <span>{name}</span>}
-          </ItemList>
-
-          <ItemList getData={getAllPlanets} onItemSelected={() => {}}>
-            {({ name }) => <span>{name}</span>}
-          </ItemList>
+          <Row left={personDetails} right={starshipDetails} />
         </div>
       </ErrorBoundary>
     );
